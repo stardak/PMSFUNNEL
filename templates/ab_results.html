@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Test Results - Portugal Made Simple</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .metric-card {
+            transition: transform 0.2s ease-in-out;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+        .winner {
+            border: 2px solid #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+        }
+        .loser {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="min-h-screen py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">A/B Test Results</h1>
+                <p class="text-lg text-gray-600">Portugal Made Simple Landing Page Performance</p>
+            </div>
+
+            <!-- Results Grid -->
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                {% for variant, data in results.items() %}
+                {% set is_winner = data.conversion_rate == (results.values() | map(attribute='conversion_rate') | max) %}
+                <div class="metric-card bg-white rounded-xl shadow-lg p-8 {{ 'winner' if is_winner else 'loser' }}">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">
+                            Variant {{ variant }}
+                            {% if is_winner and results|length > 1 %}
+                                <span class="ml-2 px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+                                    🏆 Winner
+                                </span>
+                            {% endif %}
+                        </h2>
+                        <div class="text-3xl">
+                            {% if variant == 'A' %}📹{% else %}🎬{% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Video Info -->
+                    <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-semibold text-gray-700 mb-2">Video Configuration:</h3>
+                        <p class="text-sm text-gray-600">
+                            {% if variant == 'A' %}
+                                Media ID: jz42mm3kzf (Current Video)
+                            {% else %}
+                                Media ID: ncb9bu8s4y (Test Video)
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <!-- Metrics -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
+                            <span class="text-gray-700 font-medium">Total Visitors</span>
+                            <span class="text-2xl font-bold text-blue-600">{{ data.visitors }}</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 bg-green-50 rounded-lg">
+                            <span class="text-gray-700 font-medium">Conversions</span>
+                            <span class="text-2xl font-bold text-green-600">{{ data.conversions }}</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 bg-purple-50 rounded-lg">
+                            <span class="text-gray-700 font-medium">Conversion Rate</span>
+                            <span class="text-3xl font-bold text-purple-600">{{ data.conversion_rate }}%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Bar -->
+                    <div class="mt-6">
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-700" 
+                                 style="width: {{ (data.conversion_rate / 10) * 100 if data.conversion_rate <= 10 else 100 }}%"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Performance visualization (0-10% scale)</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Summary Stats -->
+            {% if results|length > 1 %}
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <h3 class="text-xl font-bold text-gray-900 mb-6">Test Summary</h3>
+                
+                {% set variant_a = results.A %}
+                {% set variant_b = results.B %}
+                {% set total_visitors = variant_a.visitors + variant_b.visitors %}
+                {% set total_conversions = variant_a.conversions + variant_b.conversions %}
+                {% set overall_rate = (total_conversions / total_visitors * 100) if total_visitors > 0 else 0 %}
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <p class="text-sm text-gray-600">Total Visitors</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ total_visitors }}</p>
+                    </div>
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <p class="text-sm text-gray-600">Total Conversions</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ total_conversions }}</p>
+                    </div>
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <p class="text-sm text-gray-600">Overall Rate</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ "%.1f"|format(overall_rate) }}%</p>
+                    </div>
+                </div>
+                
+                {% if variant_a.conversion_rate != variant_b.conversion_rate %}
+                {% set improvement = ((variant_a.conversion_rate - variant_b.conversion_rate) / variant_b.conversion_rate * 100) if variant_b.conversion_rate > 0 else 0 %}
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-2">Performance Difference:</p>
+                    <p class="text-lg font-semibold">
+                        Variant A performs 
+                        <span class="{{ 'text-green-600' if improvement > 0 else 'text-red-600' }}">
+                            {{ "%.1f"|format(improvement|abs) }}% {{ 'better' if improvement > 0 else 'worse' }}
+                        </span>
+                        than Variant B
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Navigation -->
+            <div class="text-center">
+                <a href="/" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    ← Back to Landing Page
+                </a>
+                <button onclick="window.location.reload()" class="ml-4 inline-flex items-center px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 transition-colors">
+                    🔄 Refresh Results
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENDINTHEFERRET.COM - YouTube Title Generator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Heroicons -->
+    <script src="https://unpkg.com/heroicons@2.0.18/24/outline/index.js" type="module"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    colors: {
+                        'apple-gray': {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Recoleta Alt Font Family */
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-Thin.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-Thin.woff") }}') format('woff');
+            font-weight: 100;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-Light.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-Light.woff") }}') format('woff');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-Regular.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-Regular.woff") }}') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-Medium.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-Medium.woff") }}') format('woff');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-SemiBold.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-SemiBold.woff") }}') format('woff');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        .recoleta-font {
+            font-family: 'Recoleta Alt', 'Times New Roman', serif !important;
+        }
+        
+        /* Force Recoleta font on specific elements */
+        h1.recoleta-font, h2.recoleta-font, h3.recoleta-font {
+            font-family: 'Recoleta Alt', 'Times New Roman', serif !important;
+            font-weight: 600 !important;
+        }
+
+        /* Curved underline effect */
+        .curved-underline {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .curved-underline::after {
+            content: '';
+            position: absolute;
+            left: -10%;
+            right: -10%;
+            bottom: -8px;
+            height: 20px;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 14 Q 25 6, 50 14 T 100 14' stroke='%23EA580C' stroke-width='3' fill='none' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center bottom;
+            background-size: 100% 20px;
+            background-repeat: no-repeat;
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            50% {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 20px rgba(216, 167, 167, 0.4);
+            }
+        }
+
+        .arrow-float {
+            animation: arrow-float 2s ease-in-out infinite;
+        }
+        
+        @keyframes arrow-float {
+            0%, 100% {
+                transform: translateX(0px);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(8px);
+                opacity: 1;
+            }
+        }
+
+        /* Glassmorphism Button Styles */
+        @property --angle-1 {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: -75deg;
+        }
+
+        @property --angle-2 {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: -45deg;
+        }
+
+        :root {
+            --global--size: clamp(2rem, 4vw, 5rem);
+            --anim--hover-time: 400ms;
+            --anim--hover-ease: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Button Wrap Container */
+        .button-wrap {
+            position: relative;
+            z-index: 2;
+            border-radius: 999vw;
+            background: transparent;
+            pointer-events: none;
+            transition: all var(--anim--hover-time) var(--anim--hover-ease);
+        }
+
+        /* Button Shadow Container */
+        .button-shadow {
+            --shadow-cuttoff-fix: 2em;
+            position: absolute;
+            width: calc(100% + var(--shadow-cuttoff-fix));
+            height: calc(100% + var(--shadow-cuttoff-fix));
+            top: calc(0% - var(--shadow-cuttoff-fix) / 2);
+            left: calc(0% - var(--shadow-cuttoff-fix) / 2);
+            filter: blur(clamp(2px, 0.125em, 12px));
+            -webkit-filter: blur(clamp(2px, 0.125em, 12px));
+            -moz-filter: blur(clamp(2px, 0.125em, 12px));
+            -ms-filter: blur(clamp(2px, 0.125em, 12px));
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        /* Shadow */
+        .button-shadow::after {
+            content: "";
+            position: absolute;
+            z-index: 0;
+            inset: 0;
+            border-radius: 999vw;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
+            width: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+            height: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+            top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+            left: calc(var(--shadow-cuttoff-fix) - 0.875em);
+            padding: 0.125em;
+            box-sizing: border-box;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            transition: all var(--anim--hover-time) var(--anim--hover-ease);
+            overflow: visible;
+            opacity: 1;
+        }
+
+        /* Button Base Styles */
+        .glass-button {
+            /* Basic Styling */
+            --border-width: clamp(1px, 0.0625em, 4px);
+            all: unset;
+            cursor: pointer;
+            position: relative;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            pointer-events: auto;
+            z-index: 3;
+            background: linear-gradient(
+                -75deg,
+                rgba(255, 255, 255, 0.05),
+                rgba(255, 255, 255, 0.2),
+                rgba(255, 255, 255, 0.05)
+            );
+            border-radius: 999vw;
+            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+                0 0.25em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+                0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
+                0 0 0 0 rgba(255, 255, 255, 1);
+            backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            -webkit-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            -moz-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            -ms-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            transition: all var(--anim--hover-time) var(--anim--hover-ease);
+        }
+
+        .glass-button:hover {
+            transform: scale(0.975);
+            backdrop-filter: blur(0.01em);
+            -webkit-backdrop-filter: blur(0.01em);
+            -moz-backdrop-filter: blur(0.01em);
+            -ms-backdrop-filter: blur(0.01em);
+            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+                0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
+                0 0 0.05em 0.1em inset rgba(255, 255, 255, 0.5),
+                0 0 0 0 rgba(255, 255, 255, 1);
+        }
+
+        /* Button Text */
+        .glass-button span {
+            position: relative;
+            display: block;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            font-family: "Inter", sans-serif;
+            letter-spacing: -0.05em;
+            font-weight: 500;
+            font-size: 1em;
+            color: rgba(50, 50, 50, 1);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-shadow: 0em 0.25em 0.05em rgba(0, 0, 0, 0.1);
+            transition: all var(--anim--hover-time) var(--anim--hover-ease);
+            padding-inline: 1.5em;
+            padding-block: 0.875em;
+        }
+
+        .glass-button:hover span {
+            text-shadow: 0.025em 0.025em 0.025em rgba(0, 0, 0, 0.12);
+        }
+
+        /* Pricing Glass Box Styles */
+        .pricing-glass-box {
+            position: relative;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            background: linear-gradient(
+                -75deg,
+                rgba(255, 255, 255, 0.05),
+                rgba(255, 255, 255, 0.2),
+                rgba(255, 255, 255, 0.05)
+            );
+            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+                0 0.25em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+                0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            -webkit-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            -moz-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            -ms-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            transition: all 0.3s ease;
+        }
+
+        .pricing-glass-box:hover {
+            transform: translateY(-2px);
+            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+                0 0.3em 0.2em -0.1em rgba(0, 0, 0, 0.25),
+                0 0 0.05em 0.1em inset rgba(255, 255, 255, 0.5);
+        }
+
+        /* Feature Box Styles */
+        .feature-box {
+            background-color: #EFEDE3;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #4a5568;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-box .tick {
+            color: #4a5568;
+        }
+
+        /* New Pricing Card Styles */
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-card.featured {
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        .pricing-header {
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .free-header {
+            background: linear-gradient(135deg, #4FD1C7, #3B82F6);
+        }
+
+        .basic-header {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+        }
+
+        .premium-header {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+        }
+
+        .pricing-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .pricing-body {
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .pricing-price {
+            margin-bottom: 30px;
+        }
+
+        .price-symbol {
+            font-size: 24px;
+            color: #6B7280;
+            vertical-align: top;
+        }
+
+        .price-amount {
+            font-size: 48px;
+            font-weight: bold;
+            color: #1F2937;
+            margin: 0 5px;
+        }
+
+        .price-period {
+            font-size: 14px;
+            color: #9CA3AF;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-features {
+            margin-bottom: 30px;
+        }
+
+        .feature-item {
+            padding: 8px 0;
+            color: #6B7280;
+            font-size: 14px;
+            border-bottom: 1px solid #F3F4F6;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-button {
+            width: 80%;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .free-button {
+            background: linear-gradient(135deg, #4FD1C7, #3B82F6);
+            color: white;
+        }
+
+        .basic-button {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+            color: white;
+        }
+
+        .premium-button {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+            color: white;
+        }
+
+        .pricing-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Text Shimmer Effect */
+        .glass-button span::after {
+            content: "";
+            display: block;
+            position: absolute;
+            z-index: 1;
+            width: calc(100% - var(--border-width));
+            height: calc(100% - var(--border-width));
+            top: calc(0% + var(--border-width) / 2);
+            left: calc(0% + var(--border-width) / 2);
+            box-sizing: border-box;
+            border-radius: 999vw;
+            overflow: clip;
+            background: linear-gradient(
+                var(--angle-2),
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.5) 40% 50%,
+                rgba(255, 255, 255, 0) 55%
+            );
+            z-index: 3;
+            mix-blend-mode: screen;
+            pointer-events: none;
+            background-size: 200% 200%;
+            background-position: 0% 50%;
+            background-repeat: no-repeat;
+            transition: background-position calc(var(--anim--hover-time) * 1.25) var(--anim--hover-ease),
+                --angle-2 calc(var(--anim--hover-time) * 1.25) var(--anim--hover-ease);
+        }
+
+        .glass-button:hover span::after {
+            background-position: 25% 50%;
+        }
+
+        .glass-button:active span::after {
+            background-position: 50% 15%;
+            --angle-2: -15deg;
+        }
+
+        /* Button Outline */
+        .glass-button::after {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            border-radius: 999vw;
+            width: calc(100% + var(--border-width));
+            height: calc(100% + var(--border-width));
+            top: calc(0% - var(--border-width) / 2);
+            left: calc(0% - var(--border-width) / 2);
+            padding: var(--border-width);
+            box-sizing: border-box;
+            background: conic-gradient(
+                from var(--angle-1) at 50% 50%,
+                rgba(0, 0, 0, 0.5),
+                rgba(0, 0, 0, 0) 5% 40%,
+                rgba(0, 0, 0, 0.5) 50%,
+                rgba(0, 0, 0, 0) 60% 95%,
+                rgba(0, 0, 0, 0.5)
+            ),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            transition: all var(--anim--hover-time) var(--anim--hover-ease),
+                --angle-1 500ms ease;
+            box-shadow: inset 0 0 0 calc(var(--border-width) / 2) rgba(255, 255, 255, 0.5);
+        }
+
+        .glass-button:hover::after {
+            --angle-1: -125deg;
+        }
+
+        .glass-button:active::after {
+            --angle-1: -75deg;
+        }
+
+        /* Shadow Hover Effects */
+        .button-wrap:has(.glass-button:hover) .button-shadow {
+            filter: blur(clamp(2px, 0.0625em, 6px));
+            -webkit-filter: blur(clamp(2px, 0.0625em, 6px));
+            -moz-filter: blur(clamp(2px, 0.0625em, 6px));
+            -ms-filter: blur(clamp(2px, 0.0625em, 6px));
+            transition: filter var(--anim--hover-time) var(--anim--hover-ease);
+        }
+
+        .button-wrap:has(.glass-button:hover) .button-shadow::after {
+            top: calc(var(--shadow-cuttoff-fix) - 0.875em);
+            opacity: 1;
+        }
+
+        /* 3D Rotation Effect */
+        .button-wrap:has(.glass-button:active) {
+            transform: rotate3d(1, 0, 0, 25deg);
+        }
+
+        .button-wrap:has(.glass-button:active) .glass-button {
+            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+                0 0.125em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+                0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
+                0 0.225em 0.05em 0 rgba(0, 0, 0, 0.05),
+                0 0.25em 0 0 rgba(255, 255, 255, 0.75),
+                inset 0 0.25em 0.05em 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .button-wrap:has(.glass-button:active) .button-shadow {
+            filter: blur(clamp(2px, 0.125em, 12px));
+            -webkit-filter: blur(clamp(2px, 0.125em, 12px));
+            -moz-filter: blur(clamp(2px, 0.125em, 12px));
+            -ms-filter: blur(clamp(2px, 0.125em, 12px));
+        }
+
+        .button-wrap:has(.glass-button:active) .button-shadow::after {
+            top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+            opacity: 0.75;
+        }
+
+        .button-wrap:has(.glass-button:active) span {
+            text-shadow: 0.025em 0.25em 0.05em rgba(0, 0, 0, 0.12);
+        }
+
+        /* Aurora Background Container */
+        .aurora-background {
+            position: relative;
+        }
+
+        .aurora-background canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1.5rem;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.7;
+        }
+
+        .aurora-background > * {
+            position: relative;
+            z-index: 3;
+        }
+
+    </style>
+    <style>
+        @font-face {
+            font-family: 'Sailors';
+            src: url('{{ url_for("static", filename="fonts/sailors.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/sailors.woff") }}') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        .recoleta-font {
+            font-family: 'Sailors', serif;
+        }
+        
+        /* Gradient color1 - color2 - color1 */
+        hr.style-one {
+            border: 0;
+            height: 1px;
+            background: #333;
+            background-image: linear-gradient(to right, #ccc, #333, #ccc);
+        }
+        
+        /* Enhanced micro-interactions */
+        .enhanced-input {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .enhanced-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15), 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .enhanced-input::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .enhanced-input:focus::before {
+            left: 100%;
+        }
+        
+        .enhanced-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .enhanced-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3), 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .enhanced-button:active {
+            transform: translateY(-1px) scale(0.98);
+            transition-duration: 0.1s;
+        }
+        
+        .enhanced-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .enhanced-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Pulse glow enhancement */
+        .pulse-glow {
+            animation: pulseGlow 3s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.2);
+            }
+        }
+        
+        /* Remove focus ring from FAQ buttons */
+        button[onclick*="toggleFaq"]:focus {
+            box-shadow: none !important;
+            outline: none !important;
+            ring: none !important;
+        }
+        
+        /* FAQ Animation Styles */
+        .faq-answer {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding-top: 0;
+            padding-bottom: 0;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.3s ease-out,
+                        padding 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="font-sans bg-white text-apple-gray-900 antialiased">
+    
+
+    <!-- Hero Section with Background Container -->
+    <div class="bg-white py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="rounded-3xl p-8 md:p-12 relative overflow-hidden" style="background-color: #f2ede9;">
+                <!-- Wave Background Pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <svg class="absolute bottom-0 left-0 w-full h-full" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0,400 C300,350 600,450 900,380 C1050,340 1150,360 1200,340 L1200,600 L0,600 Z" fill="url(#wave-gradient)" opacity="0.3"/>
+                        <path d="M0,450 C250,400 500,500 800,430 C950,390 1100,410 1200,390 L1200,600 L0,600 Z" fill="url(#wave-gradient)" opacity="0.2"/>
+                        <defs>
+                            <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#6b7280;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#9ca3af;stop-opacity:0.4" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                
+                <!-- Content wrapper to ensure it's above the wave -->
+                <div class="relative z-10">
+                <!-- Navigation/Logo -->
+                <div class="text-center mb-8">
+                    <img src="{{ url_for('static', filename='images/pms-black_1754498993209.png') }}" alt="Portugal Made Simple" style="max-width: 300px; height: auto;" class="mx-auto">
+                </div>
+
+                <!-- Main Hero Content -->
+                <div class="max-w-4xl mx-auto">
+
+
+            <!-- Hero Header -->
+            <div class="text-center mb-16">
+                <h1 id="main-heading" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-4 recoleta-font tracking-tight">
+                    Your new life in<br>Portugal starts here
+                </h1>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 recoleta-font mb-8">
+                    Watch this to see how you can too—without the overwhelm.
+                </h2>
+                <div id="main-subtitle" class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed font-medium">
+                </div>
+                
+                <!-- Wistia Video -->
+                <div class="mb-8">
+                    <script src="https://fast.wistia.com/player.js" async></script>
+                    <script src="{{ video_config.script_src }}" async type="module"></script>
+                    <style>
+                        wistia-player[media-id='{{ video_config.media_id }}']:not(:defined) { 
+                            background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/{{ video_config.media_id }}/swatch'); 
+                            display: block; 
+                            filter: blur(5px); 
+                            padding-top:56.25%; 
+                        }
+                    </style>
+                    <wistia-player media-id="{{ video_config.media_id }}" aspect="1.7777777777777777"></wistia-player>
+                </div>
+
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendly Section -->
+    <div class="bg-white py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="rounded-3xl p-8 md:p-12 relative overflow-hidden" style="background-color: #f2ede9;">
+                <!-- Section Title -->
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 recoleta-font">Book a quick, friendly chat—no pressure, no strings.</h2>
+                </div>
+                
+                <!-- Typeform embed begin -->
+                <div data-tf-live="01K24WCFJ08WGQB06K1Q0PVFFY" onclick="trackConversion()" style="min-height:700px;"></div>
+                <script src="//embed.typeform.com/next/embed.js"></script>
+                <!-- Typeform embed end -->
+            </div>
+        </div>
+    </div>
+
+    <!-- A/B Testing & Analytics Script -->
+    <script>
+        // A/B Test tracking variables
+        window.abTestData = {
+            variant: '{{ variant }}',
+            visitor_id: '{{ visitor_id }}'
+        };
+        
+        // Track conversion when user interacts with Typeform
+        function trackConversion() {
+            fetch('/track-conversion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    visitor_id: window.abTestData.visitor_id,
+                    variant: window.abTestData.variant
+                })
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      console.log('Conversion tracked successfully');
+                  }
+              }).catch(error => {
+                  console.error('Error tracking conversion:', error);
+              });
+        }
+        
+        // Also track when Typeform widget loads and user interacts with it
+        document.addEventListener('DOMContentLoaded', function() {
+            // Watch for Typeform interactions
+            const typeformWidget = document.querySelector('[data-tf-live]');
+            if (typeformWidget) {
+                typeformWidget.addEventListener('click', trackConversion);
+            }
+            
+            // Listen for Typeform events
+            window.addEventListener('message', function(e) {
+                if (e.data.type && e.data.type.indexOf('form') === 0) {
+                    if (e.data.type === 'form_screen_changed' || 
+                        e.data.type === 'form_submitted') {
+                        trackConversion();
+                    }
+                }
+            });
+        });
+        
+        // Debug info (remove in production)
+        console.log('A/B Test Variant:', window.abTestData.variant);
+        console.log('Visitor ID:', window.abTestData.visitor_id);
+    </script>
+
+</body>
+</html>
