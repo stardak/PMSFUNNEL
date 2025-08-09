@@ -812,7 +812,15 @@
                 <script>
                   window.addEventListener('message', function(event) {
                     if (event.data && event.data.type === 'form-submit') {
+                      // Push to dataLayer for GTM
                       dataLayer.push({'event': 'typeform-submit'});
+                      
+                      // Fire Google Ads conversion tracking
+                      gtag('event', 'conversion', {
+                        'send_to': 'AW-17350985402/i1_PCJ6NtoIbELqNzNFA',
+                        'value': 1.0,
+                        'currency': 'EUR'
+                      });
                     }
                   });
                 </script>
