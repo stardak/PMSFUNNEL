@@ -1,1 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Portugal Made Simple</title>
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P59GC9R4');</script>
+    <!-- End Google Tag Manager -->
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17350985402">
+    </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
+      gtag('config', 'AW-17350985402');
+    </script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Recoleta Alt Font Family */
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-Thin.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-Thin.woff") }}') format('woff');
+            font-weight: 100;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-Light.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-Light.woff") }}') format('woff');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-Regular.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-Regular.woff") }}') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-Medium.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-Medium.woff") }}') format('woff');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Recoleta Alt';
+            src: url('{{ url_for("static", filename="fonts/RecoletaAlt-SemiBold.woff2") }}') format('woff2'),
+                 url('{{ url_for("static", filename="fonts/RecoletaAlt-SemiBold.woff") }}') format('woff');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        .recoleta-font {
+            font-family: 'Recoleta Alt', serif;
+        }
+    </style>
+</head>
+<body class="font-sans bg-white text-gray-900 antialiased">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P59GC9R4"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Thank You Section -->
+    <div class="min-h-screen bg-white py-12 flex items-center justify-center">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="rounded-3xl p-8 md:p-12 relative overflow-hidden" style="background-color: #f2ede9;">
+                
+                <!-- Logo -->
+                <div class="mb-8">
+                    <img src="{{ url_for('static', filename='images/pms-black_1754498993209.png') }}" alt="Portugal Made Simple" style="max-width: 250px; height: auto;" class="mx-auto">
+                </div>
+
+                <!-- Thank You Message -->
+                <div class="max-w-2xl mx-auto">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6 recoleta-font tracking-tight">
+                        Thank You!
+                    </h1>
+                    
+                    <p class="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">
+                        We've received your information and will be in touch soon to help you with your Portugal journey.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event snippet for Submit lead form conversion page -->
+    <script>
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17350985402/i1_PCJ6NtoIbELqNzNFA',
+          'value': 1.0,
+          'currency': 'EUR'
+      });
+    </script>
+</body>
+</html>
