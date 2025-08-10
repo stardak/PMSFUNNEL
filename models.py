@@ -1,13 +1,16 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
 
-# Create db instance here, imported by app.py
-db = SQLAlchemy()
+class Base(DeclarativeBase):
+    pass
+
+db = SQLAlchemy(model_class=Base)
 
 
 class Visitor(db.Model):
     __tablename__ = 'visitors'
-
+    
     id = db.Column(db.Integer, primary_key=True)
     visitor_id = db.Column(db.String(64), unique=True, nullable=False)
     variant = db.Column(db.String(1), nullable=False)  # 'A' or 'B'
@@ -18,7 +21,7 @@ class Visitor(db.Model):
 
 class Conversion(db.Model):
     __tablename__ = 'conversions'
-
+    
     id = db.Column(db.Integer, primary_key=True)
     visitor_id = db.Column(db.String(64), nullable=False)
     variant = db.Column(db.String(1), nullable=False)  # 'A' or 'B'
